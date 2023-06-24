@@ -7,6 +7,6 @@ use App\Controllers\BaseController;
 class User extends BaseController
 {
     public function index () {
-        $this->SetupLayout("user");
+        return view("user");
     }
 }
