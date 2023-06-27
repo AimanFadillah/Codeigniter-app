@@ -56,11 +56,4 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
     }
 
-    public function SetupLayout ($main = "home",$data = []) {
-        echo view("layout/header");
-        echo view("layout/navbar");
-        echo view($main,$data);
-        echo view("layout/footer");
-    }
-
 }
