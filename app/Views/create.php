@@ -9,9 +9,9 @@
                 <?= csrf_field() ?>
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control <?= $validation && $validation["name"] ? "is-invalid" : "" ?>" id="name" value="<?= old("name") ?>" name="name" placeholder="Name Siswa">
+                    <input type="text" class="form-control <?= isset($validation["name"]) ? "is-invalid" : "" ?>" id="name" value="<?= old("name") ?>" name="name" placeholder="Name Siswa">
                     <div class="invalid-feedback">
-                        <?= $validation && $validation["name"] ?  $validation["name"] : "" ?>
+                        <?= isset($validation["name"]) ?  $validation["name"] : "" ?>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -20,9 +20,9 @@
                 </div>
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Foto Siswa</label>
-                    <input class="form-control <?= $validation && $validation["img"] ? "is-invalid" : "" ?>" type="file" name="img" id="formFile">
+                    <input class="form-control <?= isset($validation["img"]) ? "is-invalid" : "" ?>" type="file" name="img" id="formFile">
                     <div class="invalid-feedback">
-                        <?= $validation && $validation["img"] ?  $validation["img"] : "" ?>
+                        <?= isset($validation["img"]) ? $validation["img"] : "" ?>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-dark">Submit</button>

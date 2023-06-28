@@ -20,7 +20,7 @@ class Home extends BaseController
     }
 
     public function create () {
-        // dd(session()->getFlashdata("validation"));
+
         return view("create",[
             "validation" => session()->getFlashdata("validation"),
         ]);
@@ -87,17 +87,27 @@ class Home extends BaseController
                     "is_unique" => "Nama kamu Sudah Terpakai"
                 ]
             ],
-            "kelas" => "required"
+            "kelas" => "required",
+            "img" => "max_size[img,3024]|is_image[img]|mime_in[img,image/jpg,image/jpeg,image/png]",
         ])){
-            $validation = Services::validation();
+            return redirect()->to("/home/edit/" . $this->request->getVar("old_name"))->withInput()->with("validation",$this->validator->getErrors());
+        }
 
-            return redirect()->to("/home/edit/" . $this->request->getVar("old_name"))->withInput()->with("validation",$validation);
+        $requestImg = $this->request->getFile("img");
+
+        if($requestImg->getError() == 4){
+            $img = $this->request->getVar("old_img");
+        }else {
+            $requestImg->move("img");
+            unlink("img/" . $this->request->getVar("old_img"));
+            $img = $requestImg->getName();
         }
 
         $this->SiswaModel->save([
             "id" => $id,
             "name" => $this->request->getVar("name"),
             "kelas" => $this->request->getVar("kelas"),
+            "img" => $img,
         ]);
 
         session()->setFlashdata("pesan","Siswa baru berhasil diubah");
@@ -107,6 +117,10 @@ class Home extends BaseController
     }
 
     public function destroy ($id) {
+        $siswa = $this->SiswaModel->find($id);
+    
+        unlink("img/" . $siswa["img"]);
+
         $this->SiswaModel->delete($id);
         return redirect()->to("/home")->with("pesan","berhasil menghapus");
     }
